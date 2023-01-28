@@ -3,7 +3,10 @@ tqdm
 dvc
 pandas
 numpy
+dcipy
+scikit-learn
+lxml
 PyYAML
 
 ### local packages -
-# -e . # << uncomment this to install from setup.py
+ -e . # << uncomment this to install from setup.py
