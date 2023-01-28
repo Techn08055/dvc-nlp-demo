@@ -3,7 +3,7 @@ tqdm
 dvc
 pandas
 numpy
-dcipy
+scipy
 scikit-learn
 lxml
 PyYAML
