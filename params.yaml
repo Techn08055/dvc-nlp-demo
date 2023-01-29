@@ -2,3 +2,8 @@
 prepare:
   split: 0.20
   seed: 2021
+
+featurize:
+  max_params: 3000
+  ngrams: 2
+  
