@@ -4,8 +4,8 @@ stages:
     cmd: python src/stage_01_prepare.py --config=configs/config.yaml --params=params.yaml
     deps:
     - path: configs/config.yaml
-      md5: 1b40843a365b02bd3aef538aa1bd824d
-      size: 315
+      md5: f79cac57cb31aabacb8f1f26d9ed0455
+      size: 358
     - path: data/data.xml
       md5: a304afb96060aad90176268345e10355
       size: 37891850
@@ -39,8 +39,8 @@ stages:
       md5: a3a61a68da25b97025c759ed85c33f63
       size: 16686854
     - path: configs/config.yaml
-      md5: 1b40843a365b02bd3aef538aa1bd824d
-      size: 315
+      md5: f79cac57cb31aabacb8f1f26d9ed0455
+      size: 358
     - path: src/stage_02_featurization.py
       md5: 9b877def72142d5aef2f6491113b0346
       size: 3045
@@ -61,3 +61,27 @@ stages:
     - path: artifacts/features/train.pkl
       md5: 3dec7ac28127ea2fae3a191fdb7f2327
       size: 4931812
+  train:
+    cmd: python src/stage_03_train.py --config=configs/config.yaml --params=params.yaml
+    deps:
+    - path: artifacts/features/train.pkl
+      md5: 3dec7ac28127ea2fae3a191fdb7f2327
+      size: 4931812
+    - path: configs/config.yaml
+      md5: f79cac57cb31aabacb8f1f26d9ed0455
+      size: 358
+    - path: src/stage_03_train.py
+      md5: a3e6f94367529e640c32d47aff5ed29c
+      size: 2149
+    - path: src/utils/common.py
+      md5: 4c3b56e24d7477c0a19d54a490a0b068
+      size: 1000
+    params:
+      params.yaml:
+        train.min_split: 16
+        train.n_est: 100
+        train.seed: 2021
+    outs:
+    - path: artifacts/model/model.pkl
+      md5: 59e4dce98e95f5545088ced90a0f7178
+      size: 72713
