@@ -6,4 +6,9 @@ prepare:
 featurize:
   max_params: 3000
   ngrams: 2
+
+train:
+  seed: 2021
+  n_est: 100
+  min_split: 16
   
