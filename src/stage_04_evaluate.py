@@ -3,10 +3,13 @@ import os
 import shutil
 from tqdm import tqdm
 import logging
-from src.utils.common import read_yaml, create_directories
+from src.utils.common import read_yaml, create_directories,save_json
 import random
 import numpy as np
 import joblib
+import sklearn.metrics as metrics
+import json
+import math
 
 
 STAGE = "Four" ## <<< change stage name 
@@ -17,7 +20,6 @@ logging.basicConfig(
     format="[%(asctime)s: %(levelname)s: %(module)s]: %(message)s",
     filemode="a"
     )
-
 
 def main(config_path, params_path):
     ## read config files
@@ -40,7 +42,29 @@ def main(config_path, params_path):
     prediction_by_class = model.predict_proba(X)
     predictions = prediction_by_class[: 1]
     
+    PRC_json_path = config["plots"]["PRC"]
+    ROC_json_path = config["plots"]["ROC"]
+    scores_json = config["metrics"]["SCORES"]
 
+    precision,recall, prc_threshold = metrics.precision_recall_curve(labels, predictions)
+    fpr, tpr, roc_threshold = metrics.roc_curve(labels,predictions)
+
+    avg_prec = metrics.average_precision_score(labels, predictions)
+    roc_auc = metrics.roc_auc_score(labels, predictions)
+    scores = {
+        "avg_prec": avg_prec,
+        "roc_auc": roc_auc
+    }
+    save_json(scores_json, scores)
+    
+    nth_point = math.ceil(len(prc_threshold)/1000)
+    prc_points = list(zip(precision, recall, prc_threshold))[::nth_point]
+    prc_data={
+        "prc":[
+            {"precision":p,"recall":r,"threshold":t}
+            for p,r,t in prc_points]
+    }
+    save_json(PRC_json_path, prc_data)
 
 
 if __name__ == '__main__':
